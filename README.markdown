@@ -1,6 +1,6 @@
-# ROTP - The Ruby One Time Password Library
+# PYOTP - The Python One Time Password Library
 
-A ruby library for generating one time passwords according to [ RFC 4226 ](http://tools.ietf.org/html/rfc4226) and the [ HOTP RFC ](http://tools.ietf.org/html/draft-mraihi-totp-timebased-00)
+A Python library for generating one time passwords according to[ RFC 4226 ](http://tools.ietf.org/html/rfc4226) and the [ HOTP RFC ](http://tools.ietf.org/html/draft-mraihi-totp-timebased-00), ported from Mark Percival's [ ROTP ](https://github.com/mdp/rotp).
 
 This is compatible with Google Authenticator apps available for Android and iPhone, and now in use on GMail
 
@@ -11,40 +11,36 @@ This is compatible with Google Authenticator apps available for Android and iPho
 * OTP's should always be used as a second factor of authentication(if your phone is lost, you account is still secured with a password)
 * Google Authenticator allows you to store multiple OTP secrets and provision those using a QR Code(no more typing in the secret)
 
-## Dependencies
-
-* OpenSSL
-
 ## Installation
 
-    gem install rotp
+    pip install pyotp
 
 ## Use
 
 ### Time based OTP's
 
-    totp = ROTP::TOTP.new("base32secret3232")
-    totp.now # => 492039
+    totp = pyotp.TOTP('base32secret3232')
+    totp.now() # => 492039
 
     # OTP verified for current time
-    totp.verify(492039) # => true
-    sleep 30
-    totp.verify(492039) # => false
+    totp.verify(492039) # => True
+    time.sleep(30)
+    totp.verify(492039) # => False
 
 ### Counter based OTP's
 
-    hotp = ROTP::HOTP.new("base32secretkey3232")
+    hotp = pyotp.HOTP('base32secret3232')
     hotp.at(0) # => 260182
     hotp.at(1) # => 55283
     hotp.at(1401) # => 316439
 
     # OTP verified with a counter
-    totp.verify(316439, 1401) # => true
-    totp.verify(316439, 1402) # => false
+    hotp.verify(316439, 1401) # => True
+    hotp.verify(316439, 1402) # => False
 
 ### Generating a Base32 Secret key
 
-    ROTP.random_base32 # returns a 16 character base32 secret. Compatible with Google Authenticator
+    pyotp.random_base32() # returns a 16 character base32 secret. Compatible with Google Authenticator
 
 ### Google Authenticator Compatible
 
@@ -66,18 +62,17 @@ Scan the following barcode with your phone, using Google Authenticator
 
 Now run the following and compare the output
 
-    require 'rubygems'
-    require 'rotp'
-    totp = ROTP::TOTP.new("JBSWY3DPEHPK3PXP")
-    p "Current OTP: #{totp.now}"
+    import pyotp
+    totp = pyotp.TOTP("JBSWY3DPEHPK3PXP")
+    print "Current OTP: %s" % totp.now()
 
 ### Changelog
 
 ####1.3.0
 
-- Added support for Ruby 1.9.x
-- Removed dependency on Base32
+- Ported to Python
 
 ### See also:
 
+Original Ruby version of ROTP by [Mark Percival](https://github.com/mdp) - [ROTP](https://github.com/mdp/rotp)
 PHP port of ROTP by [Le Lag](https://github.com/lelag) - [OTPHP](https://github.com/lelag/otphp)
