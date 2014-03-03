@@ -12,7 +12,7 @@ class TOTP(OTP):
         """
         self.interval = kwargs.pop('interval', 30)
         super(TOTP, self).__init__(*args, **kwargs)
-    
+
     def at(self, for_time):
         """
         Accepts either a Unix timestamp integer or a Time object.
@@ -22,14 +22,14 @@ class TOTP(OTP):
         if not isinstance(for_time, datetime.datetime):
             for_time = datetime.datetime.fromtimestamp(int(for_time))
         return self.generate_otp(self.timecode(for_time))
-    
+
     def now(self):
         """
         Generate the current time OTP
         @return [Integer] the OTP as an integer
         """
         return self.generate_otp(self.timecode(datetime.datetime.now()))
-    
+
     def verify(self, otp, for_time=None):
         """
         Verifies the OTP passed in against the current time OTP
@@ -37,8 +37,14 @@ class TOTP(OTP):
         """
         if for_time is None:
             for_time = datetime.datetime.now()
+
+        try:
+            otp = int(otp)
+        except TypeError, ValueError:
+            raise ValueError("`otp` expected to be int-like")
+
         return otp == self.at(for_time)
-    
+
     def provisioning_uri(self, name):
         """
         Returns the provisioning URI for the OTP
@@ -51,7 +57,7 @@ class TOTP(OTP):
             'name': urllib.quote(name, safe='@'),
             'secret': self.secret,
         }
-    
+
     def timecode(self, for_time):
         i = time.mktime(for_time.timetuple())
         return int(i / self.interval)

@@ -10,15 +10,20 @@ class HOTP(OTP):
         @returns [Integer] OTP
         """
         return self.generate_otp(count)
-    
+
     def verify(self, otp, counter):
         """
         Verifies the OTP passed in against the current time OTP
         @param [String/Integer] otp the OTP to check against
         @param [Integer] counter the counter of the OTP
         """
+        try:
+            otp = int(otp)
+        except TypeError, ValueError:
+            raise ValueError("`otp` expected to be int-like")
+
         return otp == self.at(counter)
-    
+
     def provisioning_uri(self, name, initial_count=0):
         """
         Returns the provisioning URI for the OTP
