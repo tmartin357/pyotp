@@ -3,7 +3,7 @@
 from distutils.core import setup
 
 setup(
-    version='1.3.1',
+    version='1.4',
     url='https://github.com/nathforge/pyotp',
     name='pyotp',
     description='https://github.com/nathforge/pyotp',
