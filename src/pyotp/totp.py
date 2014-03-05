@@ -7,8 +7,8 @@ import urllib
 class TOTP(OTP):
     def __init__(self, *args, **kwargs):
         """
-        @option options [Integer] interval (30) the time interval in seconds for OTP
-            This defaults to 30 which is standard.
+        @option options [Integer] interval (30) the time interval in seconds
+            for OTP This defaults to 30 which is standard.
         """
         self.interval = kwargs.pop('interval', 30)
         super(TOTP, self).__init__(*args, **kwargs)
@@ -38,12 +38,7 @@ class TOTP(OTP):
         if for_time is None:
             for_time = datetime.datetime.now()
 
-        try:
-            otp = int(otp)
-        except TypeError, ValueError:
-            raise ValueError("`otp` expected to be int-like")
-
-        return otp == self.at(for_time)
+        return unicode(otp) == unicode(self.at(for_time))
 
     def provisioning_uri(self, name):
         """
