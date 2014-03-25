@@ -13,6 +13,7 @@ def build_uri(secret, name, initial_count=None, issuer_name=None):
     See also:
         http://code.google.com/p/google-authenticator/wiki/KeyUriFormat
 
+    @param [String] the hotp/totp secret used to generate the URI
     @param [String] name of the account
     @param [Integer] initial_count starting counter value, defaults to None.
         If none, the OTP type will be assumed as TOTP.
