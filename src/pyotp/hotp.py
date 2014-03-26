@@ -1,5 +1,5 @@
 from pyotp.otp import OTP
-from . import utils
+from pyotp import utils
 
 
 class HOTP(OTP):

@@ -42,8 +42,8 @@ class HOTPExampleValuesFromTheRFC(unittest.TestCase):
             'otpauth://hotp/mark@percival?secret=wrn3pqx5uqxqvnqr&counter=12')
 
         self.assertEqual(
-            hotp.provisioning_uri('mark@percival', issuer_name='FooCorp'),
-            'otpauth://hotp/FooCorp:mark@percival?secret=wrn3pqx5uqxqvnqr&counter=0&issuer=FooCorp')
+            hotp.provisioning_uri('mark@percival', issuer_name='FooCorp!'),
+            'otpauth://hotp/FooCorp%21:mark@percival?secret=wrn3pqx5uqxqvnqr&counter=0&issuer=FooCorp%21')
 
 
 class TOTPExampleValuesFromTheRFC(unittest.TestCase):
@@ -73,8 +73,8 @@ class TOTPExampleValuesFromTheRFC(unittest.TestCase):
             'otpauth://totp/mark@percival?secret=wrn3pqx5uqxqvnqr')
 
         self.assertEqual(
-            totp.provisioning_uri('mark@percival', issuer_name='FooCorp'),
-            'otpauth://totp/FooCorp:mark@percival?secret=wrn3pqx5uqxqvnqr&issuer=FooCorp')
+            totp.provisioning_uri('mark@percival', issuer_name='FooCorp!'),
+            'otpauth://totp/FooCorp%21:mark@percival?secret=wrn3pqx5uqxqvnqr&issuer=FooCorp%21')
 
 
 class Timecop(object):
