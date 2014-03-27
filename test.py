@@ -32,7 +32,18 @@ class HOTPExampleValuesFromTheRFC(unittest.TestCase):
 
     def testProvisioningURI(self):
         hotp = pyotp.HOTP('wrn3pqx5uqxqvnqr')
-        self.assertEqual(hotp.provisioning_uri('mark@percival'), 'otpauth://hotp/mark@percival?secret=wrn3pqx5uqxqvnqr&counter=0')
+
+        self.assertEqual(
+            hotp.provisioning_uri('mark@percival'),
+            'otpauth://hotp/mark@percival?secret=wrn3pqx5uqxqvnqr&counter=0')
+
+        self.assertEqual(
+            hotp.provisioning_uri('mark@percival', initial_count=12),
+            'otpauth://hotp/mark@percival?secret=wrn3pqx5uqxqvnqr&counter=12')
+
+        self.assertEqual(
+            hotp.provisioning_uri('mark@percival', issuer_name='FooCorp!'),
+            'otpauth://hotp/FooCorp%21:mark@percival?secret=wrn3pqx5uqxqvnqr&counter=0&issuer=FooCorp%21')
 
 
 class TOTPExampleValuesFromTheRFC(unittest.TestCase):
@@ -57,7 +68,13 @@ class TOTPExampleValuesFromTheRFC(unittest.TestCase):
 
     def testProvisioningURI(self):
         totp = pyotp.TOTP('wrn3pqx5uqxqvnqr')
-        self.assertEqual(totp.provisioning_uri('mark@percival'), 'otpauth://totp/mark@percival?secret=wrn3pqx5uqxqvnqr')
+        self.assertEqual(
+            totp.provisioning_uri('mark@percival'),
+            'otpauth://totp/mark@percival?secret=wrn3pqx5uqxqvnqr')
+
+        self.assertEqual(
+            totp.provisioning_uri('mark@percival', issuer_name='FooCorp!'),
+            'otpauth://totp/FooCorp%21:mark@percival?secret=wrn3pqx5uqxqvnqr&issuer=FooCorp%21')
 
 
 class Timecop(object):

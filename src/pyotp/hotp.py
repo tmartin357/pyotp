@@ -1,5 +1,5 @@
 from pyotp.otp import OTP
-import urllib
+from pyotp import utils
 
 
 class HOTP(OTP):
@@ -19,17 +19,21 @@ class HOTP(OTP):
         """
         return unicode(otp) == unicode(self.at(counter))
 
-    def provisioning_uri(self, name, initial_count=0):
+    def provisioning_uri(self, name, initial_count=0, issuer_name=None):
         """
         Returns the provisioning URI for the OTP
         This can then be encoded in a QR Code and used
         to provision the Google Authenticator app
         @param [String] name of the account
         @param [Integer] initial_count starting counter value, defaults to 0
+        @param [String] the name of the OTP issuer; this will be the
+            organization title of the OTP entry in Authenticator
         @return [String] provisioning uri
         """
-        return 'otpauth://hotp/%(name)s?secret=%(secret)s&counter=%(initial_count)s' % {
-            'name': urllib.quote(name, safe='@'),
-            'secret': self.secret,
-            'initial_count': initial_count,
-        }
+        return utils.build_uri(
+            self.secret,
+            name,
+            initial_count=initial_count,
+            issuer_name=issuer_name,
+        )
+

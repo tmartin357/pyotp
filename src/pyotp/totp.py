@@ -1,7 +1,7 @@
 from pyotp.otp import OTP
+from pyotp import utils
 import datetime
 import time
-import urllib
 
 
 class TOTP(OTP):
@@ -40,7 +40,7 @@ class TOTP(OTP):
 
         return unicode(otp) == unicode(self.at(for_time))
 
-    def provisioning_uri(self, name):
+    def provisioning_uri(self, name, issuer_name=None):
         """
         Returns the provisioning URI for the OTP
         This can then be encoded in a QR Code and used
@@ -48,10 +48,7 @@ class TOTP(OTP):
         @param [String] name of the account
         @return [String] provisioning uri
         """
-        return 'otpauth://totp/%(name)s?secret=%(secret)s' % {
-            'name': urllib.quote(name, safe='@'),
-            'secret': self.secret,
-        }
+        return utils.build_uri(self.secret, name, issuer_name=issuer_name)
 
     def timecode(self, for_time):
         i = time.mktime(for_time.timetuple())
