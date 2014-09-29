@@ -44,3 +44,29 @@ def build_uri(secret, name, initial_count=None, issuer_name=None):
         uri += '&issuer=%s' % issuer_name
 
     return uri
+
+def strings_equal(s1, s2):
+    """
+    Timing-attack resistant string comparison.
+
+    Normal comparison using == will short-circuit on the first mismatching
+    character. This avoids that by scanning the whole string, though we
+    still reveal to a timing attack whether the strings are the same
+    length.
+    """
+    try:
+        # Python 3.3+ and 2.7.7+ include a timing-attack-resistant
+        # comparison function, which is probably more reliable than ours.
+        # Use it if available.
+        from hmac import compare_digest
+        return compare_digest(s1, s2)
+    except ImportError:
+        pass
+
+    if len(s1) != len(s2):
+        return False
+
+    differences = 0
+    for c1, c2 in zip(s1, s2):
+        differences |= ord(c1) ^ ord(c2)
+    return differences == 0
