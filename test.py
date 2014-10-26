@@ -77,6 +77,24 @@ class TOTPExampleValuesFromTheRFC(unittest.TestCase):
             'otpauth://totp/FooCorp%21:mark@percival?secret=wrn3pqx5uqxqvnqr&issuer=FooCorp%21')
 
 
+class StringComparisonTest(unittest.TestCase):
+    def testComparisons(self):
+        self.assertTrue(pyotp.utils.strings_equal("", ""))
+        self.assertTrue(pyotp.utils.strings_equal(u"", u""))
+        self.assertTrue(pyotp.utils.strings_equal("a", "a"))
+        self.assertTrue(pyotp.utils.strings_equal(u"a", u"a"))
+        self.assertTrue(pyotp.utils.strings_equal(u"a", u"a"))
+        self.assertTrue(pyotp.utils.strings_equal("a" * 1000, "a" * 1000))
+        self.assertTrue(pyotp.utils.strings_equal(u"a" * 1000, u"a" * 1000))
+
+        self.assertFalse(pyotp.utils.strings_equal("", "a"))
+        self.assertFalse(pyotp.utils.strings_equal(u"", u"a"))
+        self.assertFalse(pyotp.utils.strings_equal("a", ""))
+        self.assertFalse(pyotp.utils.strings_equal(u"a", u""))
+        self.assertFalse(pyotp.utils.strings_equal("a" * 999 + "b", "a" * 1000))
+        self.assertFalse(pyotp.utils.strings_equal(u"a" * 999 + u"b", u"a" * 1000))
+
+
 class Timecop(object):
     """
     Half-assed clone of timecop.rb, just enough to pass our tests.
